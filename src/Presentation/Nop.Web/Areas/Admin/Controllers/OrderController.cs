@@ -1724,9 +1724,6 @@ namespace Nop.Web.Areas.Admin.Controllers
             //attributes
             var attributesXml = _productAttributeParser.ParseProductAttributes(product, form, warnings);
 
-            //gift cards
-            attributesXml = AddGiftCards(form, product, attributesXml, out var recipientName, out var recipientEmail, out var senderName, out var senderEmail, out var giftCardMessage);
-
             //rental product
             _productAttributeParser.ParseRentalDates(product, form, out var rentalStartDate, out var rentalEndDate);
 
@@ -1799,6 +1796,9 @@ namespace Nop.Web.Areas.Admin.Controllers
                 //gift cards
                 if (product.IsGiftCard)
                 {
+                    _productAttributeParser.GetGiftCardAttribute(
+                        attributesXml, out var recipientName, out var recipientEmail, out var senderName, out var senderEmail, out var giftCardMessage);
+
                     for (var i = 0; i < orderItem.Quantity; i++)
                     {
                         var gc = new GiftCard
